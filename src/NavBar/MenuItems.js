@@ -9,9 +9,4 @@ export const MenuItems = [
     url: "/Grade0-Interface/liquidity",
     cName: "nav-links",
   },
-  {
-    title: "Explorer",
-    url: "explorer.grade0.com",
-    cName: "nav-links",
-  },
 ];
