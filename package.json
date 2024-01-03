@@ -26,7 +26,7 @@
     "prop-types": "^15.7.2",
     "notistack": "^1.0.10"
   },
-  "homepage": "http://grade0.com",
+  "homepage": "https://grade0.com",
   "scripts": {
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build",
