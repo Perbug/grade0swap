@@ -1,0 +1,46 @@
+{
+  "author": "Richard Moore <me@ricmoo.com>",
+  "dependencies": {
+    "@ethersproject/abstract-provider": "^5.4.0",
+    "@ethersproject/bignumber": "^5.4.0",
+    "@ethersproject/bytes": "^5.4.0",
+    "@ethersproject/logger": "^5.4.0",
+    "@ethersproject/properties": "^5.4.0"
+  },
+  "description": "An Abstract Class for desribing an Ethereum Signer for ethers.",
+  "ethereum": "donations.ethers.eth",
+  "funding": [
+    {
+      "type": "individual",
+      "url": "https://gitcoin.co/grants/13/ethersjs-complete-simple-and-tiny-2"
+    },
+    {
+      "type": "individual",
+      "url": "https://www.buymeacoffee.com/ricmoo"
+    }
+  ],
+  "gitHead": "c2c0ce75039e7256b287f9a764188d08ed0b7296",
+  "keywords": [
+    "Ethereum",
+    "ethers"
+  ],
+  "license": "MIT",
+  "main": "./lib/index.js",
+  "module": "./lib.esm/index.js",
+  "name": "@ethersproject/abstract-signer",
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "directory": "packages/abstract-signer",
+    "type": "git",
+    "url": "git://github.com/ethers-io/ethers.js.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "sideEffects": false,
+  "tarballHash": "0x8c090123662370f27356110b775c8ae479d2fbe3e6794b33bdcc9a4ab70ebaed",
+  "types": "./lib/index.d.ts",
+  "version": "5.4.0"
+}
