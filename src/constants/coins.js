@@ -19,11 +19,6 @@ const GRADE0Coins = [
     name: "Wrapped Grade02",
     abbr: "WGR02",
     address: "0xE158fa2cE59bBab291c27c554495425352b6D4D9"
-  },
-  { 
-    name: "Anima",
-    abbr: "ANM",
-    address: "0x31011d701F85Fe2431529Aa03dA8fAd787b87Ff2"
   }
 
 ]
