@@ -28,6 +28,10 @@
     <div class="container">
         <h1>Wrap Grade0 into WGR0</h1>
         <button id="connectWallet">Connect Wallet</button>
+        <div id="balance"></div>
+        
+        <input type="text" id="amount" placeholder="Enter amount to wrap/unwrap" />
+        
         <button id="wrap">Wrap</button>
         <button id="unwrap">Unwrap</button>
     </div>
@@ -332,14 +336,18 @@
         });
 
         document.getElementById('wrap').addEventListener('click', async () => {
-            const amount = ethers.utils.parseEther("1"); // Set the amount to wrap
+            const amountInput = document.getElementById('amount').value;
+            const amount = ethers.utils.parseEther(amountInput || "0");
             await contract.deposit({ value: amount });
+            updateBalance();
             console.log('Wrapped GR0 into WGR0');
         });
 
         document.getElementById('unwrap').addEventListener('click', async () => {
-            const amount = ethers.utils.parseEther("1"); // Set the amount to unwrap
+            const amountInput = document.getElementById('amount').value;
+            const amount = ethers.utils.parseEther(amountInput || "0");
             await contract.withdraw(amount);
+            updateBalance();
             console.log('Unwrapped WGR0 into GR0');
         });
     </script>
