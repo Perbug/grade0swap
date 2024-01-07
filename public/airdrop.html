@@ -42,7 +42,7 @@
             });
 
             // Get Airdrop Details
-            const airdropContractAddress = 'YOUR_AIRDROP_CONTRACT_ADDRESS'; // Replace with your contract address
+            const airdropContractAddress = '0x1065A7329737039663A5aafF7f40B01a4C6FF7Fd'; // Replace with your contract address
             const airdropContract = new window.web3.eth.Contract(AirdropABI, airdropContractAddress);
 
             const totalAirdropAmount = await airdropContract.methods.totalAirdropAmount().call();
