@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Airdrop Interface</title>
+    <script src="https://cdn.jsdelivr.net/npm/web3@1.5.0/dist/web3.min.js"></script>
+</head>
+<body>
+    <h1>Airdrop Interface</h1>
+    <p>Connect your wallet to perform an airdrop:</p>
+    <button id="connectWalletButton">Connect Wallet</button>
+    <hr>
+    <h2>Airdrop Details</h2>
+    <p>Total Airdrop Amount: <span id="totalAirdropAmount"></span> GR0</p>
+    <p>Airdrop Status: <span id="airdropStatus"></span></p>
+    <hr>
+    <h2>Airdrop Recipients</h2>
+    <textarea id="recipientAddresses" placeholder="Enter recipient addresses (one per line)"></textarea>
+    <button id="sendAirdropButton">Send Airdrop</button>
+
+    <script>
+        window.addEventListener('load', async () => {
+            // Check if Web3 is available
+            if (typeof window.ethereum === 'undefined') {
+                alert("Web3 not found. Please install a Web3 wallet like MetaMask.");
+                return;
+            }
+
+            // Initialize Web3
+            window.web3 = new Web3(window.ethereum);
+
+            // Connect Wallet
+            document.getElementById('connectWalletButton').addEventListener('click', async () => {
+                try {
+                    await window.ethereum.request({ method: 'eth_requestAccounts' });
+                    alert("Wallet connected!");
+                } catch (error) {
+                    console.error(error);
+                    alert("Failed to connect wallet.");
+                }
+            });
+
+            // Get Airdrop Details
+            const airdropContractAddress = 'YOUR_AIRDROP_CONTRACT_ADDRESS'; // Replace with your contract address
+            const airdropContract = new window.web3.eth.Contract(AirdropABI, airdropContractAddress);
+
+            const totalAirdropAmount = await airdropContract.methods.totalAirdropAmount().call();
+            const airdropStatus = await airdropContract.methods.airdropClosed().call();
+
+            document.getElementById('totalAirdropAmount').textContent = window.web3.utils.fromWei(totalAirdropAmount, 'ether');
+            document.getElementById('airdropStatus').textContent = airdropStatus ? 'Closed' : 'Open';
+
+            // Send Airdrop
+            document.getElementById('sendAirdropButton').addEventListener('click', async () => {
+                const recipientAddresses = document.getElementById('recipientAddresses').value.split('\n').map(address => address.trim());
+
+                if (recipientAddresses.length === 0) {
+                    alert("Please enter recipient addresses.");
+                    return;
+                }
+
+                try {
+                    const sendAirdrop = airdropContract.methods.sendAirdrop(recipientAddresses);
+                    const gas = await sendAirdrop.estimateGas();
+                    const sender = window.ethereum.selectedAddress;
+
+                    await sendAirdrop.send({ from: sender, gas });
+
+                    alert("Airdrop sent successfully!");
+                } catch (error) {
+                    console.error(error);
+                    alert("Failed to send airdrop.");
+                }
+            });
+        });
+    </script>
+</body>
+</html>
