@@ -72,18 +72,7 @@
 		"type": "function"
 	},
 	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "_numRecipients",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "_airdropAmountPerPerson",
-				"type": "uint256"
-			}
-		],
+		"inputs": [],
 		"stateMutability": "nonpayable",
 		"type": "constructor"
 	},
@@ -100,7 +89,7 @@
 	},
 	{
 		"inputs": [],
-		"name": "airdropAmountPerPerson",
+		"name": "AIRDROP_AMOUNT_PER_PERSON",
 		"outputs": [
 			{
 				"internalType": "uint256",
@@ -125,19 +114,6 @@
 				"internalType": "bool",
 				"name": "",
 				"type": "bool"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "numRecipients",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
 			}
 		],
 		"stateMutability": "view",
@@ -170,7 +146,7 @@
 		"type": "function"
 	}
 ]; // Replace with the ABI of your contract
-        const contractAddress = '0x1443F08B499763Bc17F773947285d9C70CAd83cA'; // Replace with your contract's address
+        const contractAddress = '0x197a6e773bbaCe84e4511dB86BEbdbb8e7D22cdA'; // Replace with your contract's address
 
         const contract = new web3.eth.Contract(contractABI, contractAddress);
 
