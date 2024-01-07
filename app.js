@@ -276,7 +276,7 @@ const relayerContractABI = [
 		"stateMutability": "pure",
 		"type": "function"
 	}
-]; // Replace with the ABI of your relayer contract
+];
 const gasStationContractABI = [
 	{
 		"inputs": [],
