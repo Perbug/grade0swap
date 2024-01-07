@@ -1,5 +1,5 @@
 const airdropContractAddress = "0x02F1d6f72Bb4b571D8f735b418c8eab3a89291D7";
-const relayerContractAddress = "0x124D547Be728EB4DE921eF810ae43894F85e2757";
+const relayerContractAddress = "0x810985f94cC856f29179Ae39f8c77DC9b00bE3F1";
 const gasStationContractAddress = "0x0aAD098C26907e19510AE23Af642B4b847FEF095"; // Add gas station contract address
 const airdropContractABI = [
 	{
