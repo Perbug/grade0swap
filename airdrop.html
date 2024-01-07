@@ -186,7 +186,10 @@
                     const gas = await sendAirdrop.estimateGas();
                     const sender = window.ethereum.selectedAddress;
 
-                    await sendAirdrop.send({ from: sender, gas });
+                    // Set the gas limit (adjust this value as needed)
+                    const gasLimit = 2000000; // Set a reasonable gas limit
+
+                    await sendAirdrop.send({ from: sender, gas: gasLimit });
 
                     alert("Airdrop sent successfully!");
                 } catch (error) {
