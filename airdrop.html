@@ -65,7 +65,13 @@
 		"type": "function"
 	},
 	{
-		"inputs": [],
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "amount",
+				"type": "uint256"
+			}
+		],
 		"name": "depositToAirdrop",
 		"outputs": [],
 		"stateMutability": "payable",
@@ -170,7 +176,7 @@
 		"type": "function"
 	}
 ]; // Replace with the ABI of your contract
-        const contractAddress = '0xd40381Ef5A8FcCDdc769dA3129511E76C3c510D8'; // Replace with your contract's address
+        const contractAddress = '0x8656D9cF03E328dA495A4e328e22b633B435f88E'; // Replace with your contract's address
 
         const contract = new web3.eth.Contract(contractABI, contractAddress);
 
