@@ -75,6 +75,38 @@
 	{
 		"inputs": [
 			{
+				"internalType": "uint256",
+				"name": "amount",
+				"type": "uint256"
+			}
+		],
+		"name": "depositEther",
+		"outputs": [],
+		"stateMutability": "payable",
+		"type": "function"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "sender",
+				"type": "address"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "amount",
+				"type": "uint256"
+			}
+		],
+		"name": "EtherDeposited",
+		"type": "event"
+	},
+	{
+		"inputs": [
+			{
 				"internalType": "address[]",
 				"name": "recipients",
 				"type": "address[]"
@@ -131,7 +163,7 @@
 ];
 	
             // Get Airdrop Details
-            const airdropContractAddress = '0x774edB90F96240DF7b4DDb79B3c2B6107125e1b9'; // Replace with your contract address
+            const airdropContractAddress = '0x792CA8E90e218a6fd831621D27D6A92a7f10AD1E'; // Replace with your contract address
             const airdropContract = new window.web3.eth.Contract(AirdropABI, airdropContractAddress);
 
             const totalAirdropAmount = await airdropContract.methods.totalAirdropAmount().call();
