@@ -1,118 +1,95 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Airdrop Interface</title>
-    <script src="https://cdn.jsdelivr.net/npm/web3@1.5.0/dist/web3.min.js"></script>
+    <title>Grade0 Airdrop</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            text-align: center;
+            padding: 50px;
+        }
+
+        .container {
+            background-color: #fff;
+            box-shadow: 0 0 10px 0 rgba(0,0,0,0.1);
+            padding: 20px;
+            max-width: 500px;
+            margin: auto;
+        }
+
+        input[type="text"], button {
+            width: 90%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            opacity: 0.8;
+        }
+    </style>
 </head>
 <body>
-    <h1>Airdrop Interface</h1>
-    <p>Connect your wallet to perform an airdrop:</p>
-    <button id="connectWalletButton">Connect Wallet</button>
-    <hr>
-    <h2>Airdrop Details</h2>
-    <p>Total Airdrop Amount: <span id="totalAirdropAmount"></span> GR0</p>
-    <p>Airdrop Status: <span id="airdropStatus"></span></p>
-    <hr>
-    <h2>Airdrop Recipients</h2>
-    <textarea id="recipientAddresses" placeholder="Enter recipient addresses (one per line)"></textarea>
-    <button id="sendAirdropButton">Send Airdrop</button>
+    <div class="container">
+        <h2>Claim Your Grade0 Airdrop</h2>
+        <input type="text" id="address" placeholder="Enter Your Ethereum Address">
+        <button onclick="claimAirdrop()">Claim Airdrop</button>
+    </div>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/web3/1.3.0/web3.min.js"></script>
     <script>
-        window.addEventListener('load', async () => {
-            // Check if Web3 is available
-            if (typeof window.ethereum === 'undefined') {
-                alert("Web3 not found. Please install a Web3 wallet like MetaMask.");
-                return;
-            }
+        // Initialize Web3
+        if (typeof web3 !== 'undefined') {
+            web3 = new Web3(web3.currentProvider);
+        } else {
+            // Set the provider you want from Web3.providers
+            web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
+        }
 
-            // Initialize Web3
-            window.web3 = new Web3(window.ethereum);
-
-            // Connect Wallet
-            document.getElementById('connectWalletButton').addEventListener('click', async () => {
-                try {
-                    await window.ethereum.request({ method: 'eth_requestAccounts' });
-                    alert("Wallet connected!");
-                } catch (error) {
-                    console.error(error);
-                    alert("Failed to connect wallet.");
-                }
-            });
-            const AirdropABI = [
+        // Airdrop Contract ABI and Address
+        const contractABI = [
 	{
 		"inputs": [],
-		"stateMutability": "nonpayable",
-		"type": "constructor"
-	},
-	{
-		"anonymous": false,
-		"inputs": [
-			{
-				"indexed": true,
-				"internalType": "address",
-				"name": "recipient",
-				"type": "address"
-			},
-			{
-				"indexed": false,
-				"internalType": "uint256",
-				"name": "amount",
-				"type": "uint256"
-			}
-		],
-		"name": "AirdropSent",
-		"type": "event"
-	},
-	{
-		"inputs": [],
-		"name": "closeAirdrop",
+		"name": "claimAirdrop",
 		"outputs": [],
 		"stateMutability": "nonpayable",
 		"type": "function"
 	},
 	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "amount",
-				"type": "uint256"
-			}
-		],
-		"name": "depositEther",
+		"inputs": [],
+		"name": "depositToAirdrop",
 		"outputs": [],
 		"stateMutability": "payable",
 		"type": "function"
 	},
 	{
-		"anonymous": false,
 		"inputs": [
 			{
-				"indexed": true,
-				"internalType": "address",
-				"name": "sender",
-				"type": "address"
+				"internalType": "uint256",
+				"name": "_numRecipients",
+				"type": "uint256"
 			},
 			{
-				"indexed": false,
 				"internalType": "uint256",
-				"name": "amount",
+				"name": "_airdropAmountPerPerson",
 				"type": "uint256"
 			}
 		],
-		"name": "EtherDeposited",
-		"type": "event"
+		"stateMutability": "nonpayable",
+		"type": "constructor"
 	},
 	{
-		"inputs": [
-			{
-				"internalType": "address[]",
-				"name": "recipients",
-				"type": "address[]"
-			}
-		],
-		"name": "sendAirdrop",
+		"inputs": [],
+		"name": "withdraw",
 		"outputs": [],
 		"stateMutability": "nonpayable",
 		"type": "function"
@@ -123,12 +100,44 @@
 	},
 	{
 		"inputs": [],
-		"name": "airdropClosed",
+		"name": "airdropAmountPerPerson",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"name": "hasClaimed",
 		"outputs": [
 			{
 				"internalType": "bool",
 				"name": "",
 				"type": "bool"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "numRecipients",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
 			}
 		],
 		"stateMutability": "view",
@@ -149,7 +158,7 @@
 	},
 	{
 		"inputs": [],
-		"name": "totalAirdropAmount",
+		"name": "totalDeposited",
 		"outputs": [
 			{
 				"internalType": "uint256",
@@ -160,44 +169,22 @@
 		"stateMutability": "view",
 		"type": "function"
 	}
-];
-	
-            // Get Airdrop Details
-            const airdropContractAddress = '0x792CA8E90e218a6fd831621D27D6A92a7f10AD1E'; // Replace with your contract address
-            const airdropContract = new window.web3.eth.Contract(AirdropABI, airdropContractAddress);
+]; // Replace with the ABI of your contract
+        const contractAddress = '0xd40381Ef5A8FcCDdc769dA3129511E76C3c510D8'; // Replace with your contract's address
 
-            const totalAirdropAmount = await airdropContract.methods.totalAirdropAmount().call();
-            const airdropStatus = await airdropContract.methods.airdropClosed().call();
+        const contract = new web3.eth.Contract(contractABI, contractAddress);
 
-            document.getElementById('totalAirdropAmount').textContent = window.web3.utils.fromWei(totalAirdropAmount, 'ether');
-            document.getElementById('airdropStatus').textContent = airdropStatus ? 'Closed' : 'Open';
-
-            // Send Airdrop
-            document.getElementById('sendAirdropButton').addEventListener('click', async () => {
-                const recipientAddresses = document.getElementById('recipientAddresses').value.split('\n').map(address => address.trim());
-
-                if (recipientAddresses.length === 0) {
-                    alert("Please enter recipient addresses.");
-                    return;
-                }
-
-                try {
-                    const sendAirdrop = airdropContract.methods.sendAirdrop(recipientAddresses);
-                    const gas = await sendAirdrop.estimateGas();
-                    const sender = window.ethereum.selectedAddress;
-
-                    // Set the gas limit (adjust this value as needed)
-                    const gasLimit = 2000000; // Set a reasonable gas limit
-
-                    await sendAirdrop.send({ from: sender, gas: gasLimit });
-
-                    alert("Airdrop sent successfully!");
-                } catch (error) {
-                    console.error(error);
-                    alert("Failed to send airdrop.");
-                }
-            });
-        });
+        function claimAirdrop() {
+            const address = document.getElementById('address').value;
+            contract.methods.claimAirdrop().send({ from: address })
+                .then(function(receipt){
+                    alert("Airdrop claimed successfully!");
+                })
+                .catch(function(error){
+                    alert("Error claiming airdrop: " + error.message);
+                });
+        }
     </script>
 </body>
 </html>
+
