@@ -1,6 +1,6 @@
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
+    font-family: 'Arial', sans-serif;
+    background-color: #eef2f7;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -10,30 +10,49 @@ body {
 
 .container {
     background-color: white;
-    padding: 20px;
-    border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    padding: 40px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     text-align: center;
+    width: 300px;
 }
 
-h1 {
+.title {
     color: #333;
+    margin-bottom: 20px;
 }
 
-#claimButton {
-    padding: 10px 20px;
+.button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 15px;
     border: none;
     border-radius: 5px;
-    background-color: #007bff;
-    color: white;
     cursor: pointer;
+    width: 100%;
+    margin-bottom: 20px;
+    font-size: 16px;
 }
 
-#claimButton:hover {
-    background-color: #0056b3;
+.button:hover {
+    background-color: #45a049;
 }
 
-#status {
-    margin-top: 20px;
+.input {
+    width: calc(100% - 20px);
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
 }
+
+.airdrop-section {
+    display: none;
+}
+
+.status {
+    color: #666;
+    font-size: 14px;
+}
+
 
