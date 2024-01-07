@@ -1,5 +1,5 @@
 const airdropContractAddress = "0x02F1d6f72Bb4b571D8f735b418c8eab3a89291D7";
-const relayerContractAddress = "0xcDBA6db28f24aCebb920E0408Ae8D6305E2F5B81";
+const relayerContractAddress = "0x124D547Be728EB4DE921eF810ae43894F85e2757";
 const gasStationContractAddress = "0x0aAD098C26907e19510AE23Af642B4b847FEF095"; // Add gas station contract address
 const airdropContractABI = [
 	{
@@ -106,6 +106,13 @@ const airdropContractABI = [
 ]; // Replace with the ABI of your airdrop contract
 const relayerContractABI = [
 	{
+		"inputs": [],
+		"name": "depositEther",
+		"outputs": [],
+		"stateMutability": "payable",
+		"type": "function"
+	},
+	{
 		"anonymous": false,
 		"inputs": [
 			{
@@ -172,7 +179,7 @@ const relayerContractABI = [
 				"type": "bytes"
 			}
 		],
-		"stateMutability": "nonpayable",
+		"stateMutability": "payable",
 		"type": "function"
 	},
 	{
