@@ -350,6 +350,10 @@ document.getElementById('claimButton').addEventListener('click', function() {
     // Construct the claimAirdrop function signature
     const functionSignature = airdropContract.methods.claimAirdrop().encodeABI();
 
+    // Hash the function signature
+    const hash = web3.utils.sha3(functionSignature);
+
+
     // Sign the transaction
     web3.eth.personal.sign(functionSignature, userAddress)
         .then(signature => {
