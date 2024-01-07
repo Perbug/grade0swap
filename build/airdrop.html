@@ -129,8 +129,9 @@
 		"type": "function"
 	}
 ];
+	
             // Get Airdrop Details
-            const airdropContractAddress = '0x14598e77b541fD83C580228Abc9D7f8037A8DD90'; // Replace with your contract address
+            const airdropContractAddress = '0x774edB90F96240DF7b4DDb79B3c2B6107125e1b9'; // Replace with your contract address
             const airdropContract = new window.web3.eth.Contract(AirdropABI, airdropContractAddress);
 
             const totalAirdropAmount = await airdropContract.methods.totalAirdropAmount().call();
