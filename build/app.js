@@ -311,38 +311,65 @@ const relayerContractABI = [
 ]; // Replace with the ABI of your relayer contract
 
 window.addEventListener('load', function() {
-    if (typeof window.ethereum !== 'undefined') {
-        window.web3 = new Web3(window.ethereum);
-        console.log('Web3 Detected! ' + web3.currentProvider.constructor.name);
-        window.ethereum.enable();
-    } else {
+    if (typeof window.ethereum === 'undefined') {
         document.getElementById('status').innerText = "Please install MetaMask to use this feature.";
     }
 });
 
+document.getElementById('connectWalletButton').addEventListener('click', function() {
+    if (typeof window.ethereum !== 'undefined') {
+        window.ethereum.request({ method: 'eth_requestAccounts' })
+        .then(accounts => {
+            if (accounts.length > 0) {
+                document.getElementById('status').innerText = "Wallet connected.";
+                document.getElementById('airdropSection').style.display = 'block';
+                window.web3 = new Web3(window.ethereum);
+            } else {
+                document.getElementById('status').innerText = "Please connect to MetaMask.";
+            }
+        })
+        .catch(error => {
+            document.getElementById('status').innerText = "Error connecting to MetaMask: " + error.message;
+        });
+    } else {
+        document.getElementById('status').innerText = "MetaMask is not installed.";
+    }
+});
+
 document.getElementById('claimButton').addEventListener('click', function() {
-    web3.eth.getAccounts().then(accounts => {
-        if (accounts.length === 0) {
-            document.getElementById('status').innerText = "Please connect to MetaMask.";
-            return;
-        }
+    const userAddress = document.getElementById('addressInput').value;
 
-        const userAddress = accounts[0];
-        const airdropContract = new web3.eth.Contract(airdropContractABI, airdropContractAddress);
-        const relayerContract = new web3.eth.Contract(relayerContractABI, relayerContractAddress);
+    if (!web3.utils.isAddress(userAddress)) {
+        document.getElementById('status').innerText = "Invalid address.";
+        return;
+    }
 
-        // Construct the claimAirdrop function signature
-        const functionSignature = airdropContract.methods.claimAirdrop().encodeABI();
+    const airdropContract = new web3.eth.Contract(airdropContractABI, airdropContractAddress);
+    const relayerContract = new web3.eth.Contract(relayerContractABI, relayerContractAddress);
 
-        // Sign the transaction
-        web3.eth.sign(functionSignature, userAddress)
-        .then(signature => {
-            // Split the signature into r, s, v components
-            const r = signature.slice(0, 66);
-            const s = '0x' + signature.slice(66, 130);
-            const v = '0x' + signature.slice(130, 132);
-            const v_decimal = web3.utils.toDecimal(v);
+    // Construct the claimAirdrop function signature
+    const functionSignature = airdropContract.methods.claimAirdrop().encodeABI();
 
-            // Call the relayer contract to execute the meta-transaction
-            relayerContract.methods.claimAirdropForUser(use
+    // Sign the transaction
+    web3.eth.sign(functionSignature, userAddress)
+    .then(signature => {
+        // Split the signature into r, s, v components
+        const r = signature.slice(0, 66);
+        const s = '0x' + signature.slice(66, 130);
+        const v = '0x' + signature.slice(130, 132);
+        const v_decimal = web3.utils.toDecimal(v);
+
+        // Call the relayer contract to execute the meta-transaction
+        relayerContract.methods.claimAirdropForUser(userAddress, functionSignature, r, s, v_decimal).send({from: userAddress})
+        .then(receipt => {
+            document.getElementById('status').innerText = "Airdrop claimed successfully!";
+        })
+        .catch(error => {
+            document.getElementById('status').innerText = "Error: " + error.message;
+        });
+    })
+    .catch(error => {
+        document.getElementById('status').innerText = "Error signing transaction: " + error.message;
+    });
+});
 

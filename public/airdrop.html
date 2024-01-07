@@ -9,13 +9,18 @@
 <body>
     <div class="container">
         <h1>Claim Your Airdrop</h1>
-        <button id="claimButton">Claim Airdrop</button>
+        <button id="connectWalletButton">Connect Wallet</button>
+        <div id="airdropSection" style="display:none;">
+            <input type="text" id="addressInput" placeholder="Enter your Ethereum address">
+            <button id="claimButton">Claim Airdrop</button>
+        </div>
         <p id="status"></p>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/web3@1.3.0/dist/web3.min.js"></script>
     <script src="app.js"></script>
 </body>
 </html>
+
 
 
 
