@@ -353,27 +353,27 @@ document.getElementById('claimButton').addEventListener('click', function() {
     // Hash the function signature
     const hash = web3.utils.sha3(functionSignature);
 
+    // Sign the hash of the function signature
+    web3.eth.personal.sign(hash, userAddress)
+    .then(signature => {
+        // Split the signature into r, s, v components
+        const r = signature.slice(0, 66);
+        const s = '0x' + signature.slice(66, 130);
+        const v = '0x' + signature.slice(130, 132);
+        const v_decimal = web3.utils.toDecimal(v);
 
-    // Sign the transaction
-    web3.eth.personal.sign(functionSignature, userAddress)
-        .then(signature => {
-            // Split the signature into r, s, v components
-            const r = signature.slice(0, 66);
-            const s = '0x' + signature.slice(66, 130);
-            const v = '0x' + signature.slice(130, 132);
-            const v_decimal = web3.utils.toDecimal(v);
-
-            // Call the relayer contract to execute the meta-transaction
-            relayerContract.methods.claimAirdropForUser(userAddress, functionSignature, r, s, v_decimal).send({from: userAddress})
-            .then(receipt => {
-                document.getElementById('status').innerText = "Airdrop claimed successfully!";
-            })
-            .catch(error => {
-                document.getElementById('status').innerText = "Error: " + error.message;
-            });
+        // Call the relayer contract to execute the meta-transaction
+        relayerContract.methods.claimAirdropForUser(userAddress, functionSignature, r, s, v_decimal).send({from: userAddress})
+        .then(receipt => {
+            document.getElementById('status').innerText = "Airdrop claimed successfully!";
         })
         .catch(error => {
-            document.getElementById('status').innerText = "Error signing transaction: " + error.message;
+            document.getElementById('status').innerText = "Error: " + error.message;
         });
+    })
+    .catch(error => {
+        document.getElementById('status').innerText = "Error signing transaction: " + error.message;
+    });
 });
+
 
