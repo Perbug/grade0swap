@@ -1,5 +1,6 @@
-const airdropContractAddress = "0x1f8b6360568EE3b1d7697A79b7F8CbB6fF60123b";
-const relayerContractAddress = "0xB224B805e9FDBaDE0d3B692137840eC1810C9593";
+const airdropContractAddress = "0x02F1d6f72Bb4b571D8f735b418c8eab3a89291D7";
+const relayerContractAddress = "0xcDBA6db28f24aCebb920E0408Ae8D6305E2F5B81";
+const gasStationContractAddress = "0x0aAD098C26907e19510AE23Af642B4b847FEF095"; // Add gas station contract address
 const airdropContractABI = [
 	{
 		"inputs": [],
@@ -27,43 +28,23 @@ const airdropContractABI = [
 		"type": "function"
 	},
 	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "userAddress",
-				"type": "address"
-			},
-			{
-				"internalType": "bytes",
-				"name": "functionSignature",
-				"type": "bytes"
-			},
-			{
-				"internalType": "bytes32",
-				"name": "sigR",
-				"type": "bytes32"
-			},
-			{
-				"internalType": "bytes32",
-				"name": "sigS",
-				"type": "bytes32"
-			},
-			{
-				"internalType": "uint8",
-				"name": "sigV",
-				"type": "uint8"
-			}
-		],
-		"name": "claimAirdropForUser",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
 		"inputs": [],
 		"name": "depositToAirdrop",
 		"outputs": [],
 		"stateMutability": "payable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "gasStation",
+		"outputs": [
+			{
+				"internalType": "contract IGasStation",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"stateMutability": "view",
 		"type": "function"
 	},
 	{
@@ -91,19 +72,6 @@ const airdropContractABI = [
 		"outputs": [
 			{
 				"internalType": "address",
-				"name": "",
-				"type": "address"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "relayer",
-		"outputs": [
-			{
-				"internalType": "contract IRelayer",
 				"name": "",
 				"type": "address"
 			}
@@ -309,6 +277,81 @@ const relayerContractABI = [
 		"type": "function"
 	}
 ]; // Replace with the ABI of your relayer contract
+const gasStationContractABI = [
+	{
+		"inputs": [],
+		"name": "depositForGas",
+		"outputs": [],
+		"stateMutability": "payable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address payable",
+				"name": "contractAddress",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "amount",
+				"type": "uint256"
+			}
+		],
+		"name": "payGas",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"stateMutability": "nonpayable",
+		"type": "constructor"
+	},
+	{
+		"inputs": [],
+		"name": "withdrawExcess",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"stateMutability": "payable",
+		"type": "receive"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"name": "gasBalances",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "owner",
+		"outputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	}
+]; // Replace with the ABI of your gas station contract
 
 window.addEventListener('load', function() {
     if (typeof window.ethereum === 'undefined') {
@@ -346,6 +389,7 @@ document.getElementById('claimButton').addEventListener('click', function() {
 
     const airdropContract = new web3.eth.Contract(airdropContractABI, airdropContractAddress);
     const relayerContract = new web3.eth.Contract(relayerContractABI, relayerContractAddress);
+    const gasStationContract = new web3.eth.Contract(gasStationContractABI, gasStationContractAddress); // Create a contract instance for the gas station
 
     // Construct the claimAirdrop function signature
     const functionSignature = airdropContract.methods.claimAirdrop().encodeABI();
@@ -362,18 +406,25 @@ document.getElementById('claimButton').addEventListener('click', function() {
         const v = '0x' + signature.slice(130, 132);
         const v_decimal = web3.utils.toDecimal(v);
 
-        // Call the relayer contract to execute the meta-transaction
-        relayerContract.methods.claimAirdropForUser(userAddress, functionSignature, r, s, v_decimal).send({from: userAddress})
-        .then(receipt => {
-            document.getElementById('status').innerText = "Airdrop claimed successfully!";
+        // Call the relayer contract to execute the meta-transaction and use the gas station for gas payment
+        gasStationContract.methods.payGas(relayerContractAddress, web3.utils.toWei("0.01", "ether")).send({ from: userAddress })
+        .then(() => {
+            relayerContract.methods.executeMetaTransaction(userAddress, functionSignature, r, s, v_decimal).send({ from: userAddress })
+            .then(receipt => {
+                document.getElementById('status').innerText = "Airdrop claimed successfully!";
+            })
+            .catch(error => {
+                document.getElementById('status').innerText = "Error: " + error.message;
+            });
         })
         .catch(error => {
-            document.getElementById('status').innerText = "Error: " + error.message;
+            document.getElementById('status').innerText = "Error paying for gas: " + error.message;
         });
     })
     .catch(error => {
         document.getElementById('status').innerText = "Error signing transaction: " + error.message;
     });
 });
+
 
 
