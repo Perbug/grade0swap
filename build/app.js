@@ -276,7 +276,7 @@ const relayerContractABI = [
 		"stateMutability": "pure",
 		"type": "function"
 	}
-]; // Replace with the ABI of your relayer contract
+];
 const gasStationContractABI = [
 	{
 		"inputs": [],
@@ -389,7 +389,6 @@ document.getElementById('claimButton').addEventListener('click', function() {
 
     const airdropContract = new web3.eth.Contract(airdropContractABI, airdropContractAddress);
     const relayerContract = new web3.eth.Contract(relayerContractABI, relayerContractAddress);
-    const gasStationContract = new web3.eth.Contract(gasStationContractABI, gasStationContractAddress); // Create a contract instance for the gas station
 
     // Construct the claimAirdrop function signature
     const functionSignature = airdropContract.methods.claimAirdrop().encodeABI();
@@ -406,25 +405,21 @@ document.getElementById('claimButton').addEventListener('click', function() {
         const v = '0x' + signature.slice(130, 132);
         const v_decimal = web3.utils.toDecimal(v);
 
-        // Call the relayer contract to execute the meta-transaction and use the gas station for gas payment
-        gasStationContract.methods.payGas(relayerContractAddress, web3.utils.toWei("0.01", "ether")).send({ from: userAddress })
-        .then(() => {
-            relayerContract.methods.executeMetaTransaction(userAddress, functionSignature, r, s, v_decimal).send({ from: userAddress })
-            .then(receipt => {
-                document.getElementById('status').innerText = "Airdrop claimed successfully!";
-            })
-            .catch(error => {
-                document.getElementById('status').innerText = "Error: " + error.message;
-            });
+        // Call the relayer contract to execute the meta-transaction
+        relayerContract.methods.executeMetaTransaction(userAddress, functionSignature, r, s, v_decimal).send({ from: userAddress })
+        .then(receipt => {
+            document.getElementById('status').innerText = "Airdrop claimed successfully!";
         })
         .catch(error => {
-            document.getElementById('status').innerText = "Error paying for gas: " + error.message;
+            document.getElementById('status').innerText = "Error: " + error.message;
         });
     })
     .catch(error => {
         document.getElementById('status').innerText = "Error signing transaction: " + error.message;
     });
 });
+
+
 
 
 
