@@ -822,8 +822,60 @@
       }
 
       // Constants for Grade0Bridge on Ropsten
-      const bridgeRopstenAbi = /* Paste Grade0Bridge ABI on Ropsten here */;
-      const bridgeRopstenAddress = /* Enter Grade0Bridge address on Ropsten here */;
+      const bridgeRopstenAbi = [
+	{
+		"inputs": [],
+		"stateMutability": "nonpayable",
+		"type": "constructor"
+	},
+	{
+		"inputs": [],
+		"name": "admin",
+		"outputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "deploy",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "grade0Bridge",
+		"outputs": [
+			{
+				"internalType": "contract Grade0Bridge",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "wrappedGrade0TokenRopsten",
+		"outputs": [
+			{
+				"internalType": "contract WrappedGrade0TokenRopsten",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	}
+];
+      const bridgeRopstenAddress = 0x3fB8458153912679eEE1A6fB3521ee6d11EE8095;
 
       const bridgeRopstenContract = new window.web3.eth.Contract(bridgeRopstenAbi, bridgeRopstenAddress);
 
