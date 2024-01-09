@@ -1,81 +1,225 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Grade0 Token Bridge</title>
-  <script src="https://cdn.jsdelivr.net/npm/web3@1.3.6/dist/web3.min.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grade0 Bridge</title>
+    <script src="https://cdn.jsdelivr.net/npm/web3@1.6.0/dist/web3.min.js"></script>
 </head>
 <body>
-  <h1>Grade0 Token Bridge</h1>
 
-  <p>Connected Account: <span id="account"></span></p>
+<h1>Grade0 Bridge</h1>
 
-  <label for="amount">Amount:</label>
-  <input type="text" id="amount" placeholder="Enter amount">
+<script>
+    const web3 = new Web3(Web3.givenProvider);
 
-  <button onclick="lockTokens()">Lock Tokens</button>
-
-  <label for="recipient">Recipient Address:</label>
-  <input type="text" id="recipient" placeholder="Enter recipient address">
-
-  <button onclick="unlockTokens()">Unlock Tokens</button>
-
-  <script>
-    document.addEventListener('DOMContentLoaded', async () => {
-      await connectWallet();
-    });
-
-    async function connectWallet() {
-      if (window.ethereum) {
-        window.web3 = new Web3(window.ethereum);
-        try {
-          // Request account access if needed
-          await window.ethereum.request({ method: 'eth_requestAccounts' });
-          // Accounts now exposed
-          displayAccount();
-        } catch (error) {
-          console.error(error);
-        }
-      } else {
-        console.error("Web3 provider not detected. Please install MetaMask.");
-      }
-    }
-
-    async function displayAccount() {
-      const accounts = await window.web3.eth.getAccounts();
-      const account = accounts[0];
-      document.getElementById('account').innerText = account;
-    }
-
-    async function lockTokens() {
-      const amount = document.getElementById('amount').value;
-      if (!amount || isNaN(amount) || parseFloat(amount) <= 0) {
-        alert("Please enter a valid amount.");
-        return;
-      }
-
-      // Constants for Wrapped Grade0 on Ropsten
-      const wrappedGrade0AbiRopsten = [
+    // Replace these values with the actual contract addresses and ABIs
+    const grade0BridgeAddress = '0x28aBA28a8F739C7bEAE3E9a1358757e4A6D23848';
+    const grade0BridgeAbi = [
+	{
+		"inputs": [],
+		"stateMutability": "nonpayable",
+		"type": "constructor"
+	},
 	{
 		"anonymous": false,
 		"inputs": [
 			{
 				"indexed": true,
 				"internalType": "address",
-				"name": "src",
-				"type": "address"
-			},
-			{
-				"indexed": true,
-				"internalType": "address",
-				"name": "guy",
+				"name": "sender",
 				"type": "address"
 			},
 			{
 				"indexed": false,
 				"internalType": "uint256",
-				"name": "wad",
+				"name": "amount",
+				"type": "uint256"
+			}
+		],
+		"name": "Locked",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "recipient",
+				"type": "address"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "amount",
+				"type": "uint256"
+			}
+		],
+		"name": "Unlocked",
+		"type": "event"
+	},
+	{
+		"inputs": [],
+		"name": "admin",
+		"outputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "grade0Token",
+		"outputs": [
+			{
+				"internalType": "contract IERC20",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "amount",
+				"type": "uint256"
+			}
+		],
+		"name": "lock",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "_wrappedGrade0Address",
+				"type": "address"
+			}
+		],
+		"name": "setGrade0Token",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "recipient",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "amount",
+				"type": "uint256"
+			}
+		],
+		"name": "unlock",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "wrappedGrade0Address",
+		"outputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	}
+];  // Replace with actual ABI
+
+    const deployBridgeAddress = '0x3fB8458153912679eEE1A6fB3521ee6d11EE8095';
+    const deployBridgeAbi = [
+	{
+		"inputs": [],
+		"stateMutability": "nonpayable",
+		"type": "constructor"
+	},
+	{
+		"inputs": [],
+		"name": "admin",
+		"outputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "deploy",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "grade0Bridge",
+		"outputs": [
+			{
+				"internalType": "contract Grade0Bridge",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "wrappedGrade0TokenRopsten",
+		"outputs": [
+			{
+				"internalType": "contract WrappedGrade0TokenRopsten",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	}
+];  // Replace with actual ABI
+
+    const wrappedGrade0TokenAddress = '0xa3c5934580801b98ad9170e7D13F1654C4096121';
+    const wrappedGrade0TokenAbi = [
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "owner",
+				"type": "address"
+			},
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "spender",
+				"type": "address"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "amount",
 				"type": "uint256"
 			}
 		],
@@ -88,13 +232,13 @@
 			{
 				"indexed": true,
 				"internalType": "address",
-				"name": "dst",
+				"name": "to",
 				"type": "address"
 			},
 			{
 				"indexed": false,
 				"internalType": "uint256",
-				"name": "wad",
+				"name": "amount",
 				"type": "uint256"
 			}
 		],
@@ -107,19 +251,19 @@
 			{
 				"indexed": true,
 				"internalType": "address",
-				"name": "src",
+				"name": "from",
 				"type": "address"
 			},
 			{
 				"indexed": true,
 				"internalType": "address",
-				"name": "dst",
+				"name": "to",
 				"type": "address"
 			},
 			{
 				"indexed": false,
 				"internalType": "uint256",
-				"name": "wad",
+				"name": "amount",
 				"type": "uint256"
 			}
 		],
@@ -132,13 +276,13 @@
 			{
 				"indexed": true,
 				"internalType": "address",
-				"name": "src",
+				"name": "from",
 				"type": "address"
 			},
 			{
 				"indexed": false,
 				"internalType": "uint256",
-				"name": "wad",
+				"name": "amount",
 				"type": "uint256"
 			}
 		],
@@ -173,12 +317,12 @@
 		"inputs": [
 			{
 				"internalType": "address",
-				"name": "guy",
+				"name": "spender",
 				"type": "address"
 			},
 			{
 				"internalType": "uint256",
-				"name": "wad",
+				"name": "amount",
 				"type": "uint256"
 			}
 		],
@@ -275,12 +419,12 @@
 		"inputs": [
 			{
 				"internalType": "address",
-				"name": "dst",
+				"name": "to",
 				"type": "address"
 			},
 			{
 				"internalType": "uint256",
-				"name": "wad",
+				"name": "amount",
 				"type": "uint256"
 			}
 		],
@@ -299,17 +443,17 @@
 		"inputs": [
 			{
 				"internalType": "address",
-				"name": "src",
+				"name": "from",
 				"type": "address"
 			},
 			{
 				"internalType": "address",
-				"name": "dst",
+				"name": "to",
 				"type": "address"
 			},
 			{
 				"internalType": "uint256",
-				"name": "wad",
+				"name": "amount",
 				"type": "uint256"
 			}
 		],
@@ -328,7 +472,7 @@
 		"inputs": [
 			{
 				"internalType": "uint256",
-				"name": "wad",
+				"name": "amount",
 				"type": "uint256"
 			}
 		],
@@ -336,72 +480,11 @@
 		"outputs": [],
 		"stateMutability": "nonpayable",
 		"type": "function"
-	},
-	{
-		"stateMutability": "payable",
-		"type": "receive"
 	}
-];
-      const wrappedGrade0AddressRopsten = 0xa3c5934580801b98ad9170e7D13F1654C4096121;
+];  // Replace with actual ABI
 
-      // Constants for Grade0Bridge on Ropsten
-      const bridgeRopstenAbi = [
-	{
-		"inputs": [],
-		"stateMutability": "nonpayable",
-		"type": "constructor"
-	},
-	{
-		"inputs": [],
-		"name": "admin",
-		"outputs": [
-			{
-				"internalType": "address",
-				"name": "",
-				"type": "address"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "deploy",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "grade0Bridge",
-		"outputs": [
-			{
-				"internalType": "contract Grade0Bridge",
-				"name": "",
-				"type": "address"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "wrappedGrade0TokenRopsten",
-		"outputs": [
-			{
-				"internalType": "contract WrappedGrade0TokenRopsten",
-				"name": "",
-				"type": "address"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	}
-];
-      const bridgeRopstenAddress = 0x3fB8458153912679eEE1A6fB3521ee6d11EE8095;
-
-      // Constants for Wrapped Grade0 on Grade0
-      const wrappedGrade0Grade0Abi = [
+    const weth9Address = '0xd2e89db8d82cFBa24963E92EFc6c7B1f6acAc1BB';
+    const weth9Abi = [
 	{
 		"constant": true,
 		"inputs": [],
@@ -679,218 +762,88 @@
 		"name": "Withdrawal",
 		"type": "event"
 	}
-];
-      const wrappedGrade0Grade0Address = 0xd2e89db8d82cFBa24963E92EFc6c7B1f6acAc1BB;
+];  // Replace with actual ABI
 
-      // Constants for Grade0Bridge on Grade0
-      const bridgeGrade0Abi = [
-	{
-		"inputs": [],
-		"stateMutability": "nonpayable",
-		"type": "constructor"
-	},
-	{
-		"anonymous": false,
-		"inputs": [
-			{
-				"indexed": true,
-				"internalType": "address",
-				"name": "sender",
-				"type": "address"
-			},
-			{
-				"indexed": false,
-				"internalType": "uint256",
-				"name": "amount",
-				"type": "uint256"
-			}
-		],
-		"name": "Locked",
-		"type": "event"
-	},
-	{
-		"anonymous": false,
-		"inputs": [
-			{
-				"indexed": true,
-				"internalType": "address",
-				"name": "recipient",
-				"type": "address"
-			},
-			{
-				"indexed": false,
-				"internalType": "uint256",
-				"name": "amount",
-				"type": "uint256"
-			}
-		],
-		"name": "Unlocked",
-		"type": "event"
-	},
-	{
-		"inputs": [],
-		"name": "admin",
-		"outputs": [
-			{
-				"internalType": "address",
-				"name": "",
-				"type": "address"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "grade0Token",
-		"outputs": [
-			{
-				"internalType": "contract IERC20",
-				"name": "",
-				"type": "address"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "amount",
-				"type": "uint256"
-			}
-		],
-		"name": "lock",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "address",
-				"name": "recipient",
-				"type": "address"
-			},
-			{
-				"internalType": "uint256",
-				"name": "amount",
-				"type": "uint256"
-			}
-		],
-		"name": "unlock",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "wrappedGrade0Address",
-		"outputs": [
-			{
-				"internalType": "address",
-				"name": "",
-				"type": "address"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	}
-];
-      const bridgeGrade0Address = 0x28aBA28a8F739C7bEAE3E9a1358757e4A6D23848;
+    async function connectWallet() {
+        if (window.ethereum) {
+            try {
+                await window.ethereum.enable();
+                const accounts = await web3.eth.getAccounts();
+                console.log("Connected to wallet:", accounts[0]);
 
-      const wrappedGrade0Contract = new window.web3.eth.Contract(wrappedGrade0AbiRopsten, wrappedGrade0AddressRopsten);
+                const grade0Bridge = new web3.eth.Contract(grade0BridgeAbi, grade0BridgeAddress);
+                const deployBridge = new web3.eth.Contract(deployBridgeAbi, deployBridgeAddress);
+                const wrappedGrade0Token = new web3.eth.Contract(wrappedGrade0TokenAbi, wrappedGrade0TokenAddress);
+                const weth9 = new web3.eth.Contract(weth9Abi, weth9Address);
 
-      try {
-        const result = await wrappedGrade0Contract.methods.lock(amount).send({ from: window.ethereum.selectedAddress });
-        console.log("Lock Tokens Transaction Result:", result);
-        alert("Tokens locked successfully!");
-      } catch (error) {
-        console.error("Lock Tokens Error:", error);
-        alert("Failed to lock tokens. Check the console for details.");
-      }
+                // Call your contract functions or perform other actions here
+
+            } catch (error) {
+                console.error("Error connecting to wallet:", error);
+            }
+        } else {
+            console.error("Metamask or other Ethereum wallet not detected");
+        }
     }
 
-    async function unlockTokens() {
-      const recipient = document.getElementById('recipient').value;
-      const amount = document.getElementById('amount').value;
-
-      if (!recipient || !amount || isNaN(amount) || parseFloat(amount) <= 0) {
-        alert("Please enter a valid recipient address and amount.");
-        return;
-      }
-
-      // Constants for Grade0Bridge on Ropsten
-      const bridgeRopstenAbi = [
-	{
-		"inputs": [],
-		"stateMutability": "nonpayable",
-		"type": "constructor"
-	},
-	{
-		"inputs": [],
-		"name": "admin",
-		"outputs": [
-			{
-				"internalType": "address",
-				"name": "",
-				"type": "address"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "deploy",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "grade0Bridge",
-		"outputs": [
-			{
-				"internalType": "contract Grade0Bridge",
-				"name": "",
-				"type": "address"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "wrappedGrade0TokenRopsten",
-		"outputs": [
-			{
-				"internalType": "contract WrappedGrade0TokenRopsten",
-				"name": "",
-				"type": "address"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	}
-];
-      const bridgeRopstenAddress = 0x3fB8458153912679eEE1A6fB3521ee6d11EE8095;
-
-      const bridgeRopstenContract = new window.web3.eth.Contract(bridgeRopstenAbi, bridgeRopstenAddress);
-
-      try {
-        const result = await bridgeRopstenContract.methods.unlock(recipient, amount).send({ from: window.ethereum.selectedAddress });
-        console.log("Unlock Tokens Transaction Result:", result);
-        alert("Tokens unlocked successfully!");
-      } catch (error) {
-        console.error("Unlock Tokens Error:", error);
-        alert("Failed to unlock tokens. Check the console for details.");
-      }
+    // Example functions to interact with the contracts
+    async function lockGrade0() {
+        const amount = document.getElementById('lockAmount').value;
+        await grade0Bridge.methods.lock(amount).send({ from: accounts[0] });
     }
-  </script>
+
+    async function unlockGrade0() {
+        const recipient = document.getElementById('unlockRecipient').value;
+        const amount = document.getElementById('unlockAmount').value;
+        await grade0Bridge.methods.unlock(recipient, amount).send({ from: accounts[0] });
+    }
+
+    async function deployBridge() {
+        await deployBridge.methods.deploy().send({ from: accounts[0] });
+    }
+
+    async function depositWrappedGrade0() {
+        const amount = document.getElementById('depositAmount').value;
+        await wrappedGrade0Token.methods.deposit().send({ from: accounts[0], value: amount });
+    }
+
+    async function withdrawWrappedGrade0() {
+        const amount = document.getElementById('withdrawAmount').value;
+        await wrappedGrade0Token.methods.withdraw(amount).send({ from: accounts[0] });
+    }
+</script>
+
+<button onclick="connectWallet()">Connect Wallet</button>
+
+<h2>Lock Grade0</h2>
+<label>Amount to Lock:</label>
+<input type="text" id="lockAmount" placeholder="Enter amount">
+<button onclick="lockGrade0()">Lock Grade0</button>
+
+<h2>Unlock Grade0</h2>
+<label>Recipient Address:</label>
+<input type="text" id="unlockRecipient" placeholder="Enter recipient address">
+<label>Amount to Unlock:</label>
+<input type="text" id="unlockAmount" placeholder="Enter amount">
+<button onclick="unlockGrade0()">Unlock Grade0</button>
+
+<h2>Deploy Bridge</h2>
+<button onclick="deployBridge()">Deploy Bridge</button>
+
+<h2>Deposit Wrapped Grade0</h2>
+<label>Amount to Deposit:</label>
+<input type="text" id="depositAmount" placeholder="Enter amount">
+<button onclick="depositWrappedGrade0()">Deposit Wrapped Grade0</button>
+
+<h2>Withdraw Wrapped Grade0</h2>
+<label>Amount to Withdraw:</label>
+<input type="text" id="withdrawAmount" placeholder="Enter amount">
+<button onclick="withdrawWrappedGrade0()">Withdraw Wrapped Grade0</button>
+
 </body>
 </html>
+
+
 
 
 
