@@ -25,33 +25,45 @@
 <button onclick="mintTokens()">Mint Tokens</button>
 
 <script>
-  // Replace with the address of your BridgeBsc and BridgeEth contracts
-  const bridgeBscAddress = '0xD0ae14EbaA4e6AD5458Ddc3a00Ce6Da24CC2076E';
-  const bridgeEthAddress = '0x5f2ae2d8f75b777a82142dcbfec6d83434b96ac1';
-
   // Replace with the ABI of your IToken contract
   const tokenABI = [
-    {
-      "constant": false,
-      "inputs": [
-        {"name": "to", "type": "address"},
-        {"name": "amount", "type": "uint256"}
-      ],
-      "name": "mint",
-      "outputs": [],
-      "type": "function"
-    },
-    {
-      "constant": false,
-      "inputs": [
-        {"name": "owner", "type": "address"},
-        {"name": "amount", "type": "uint256"}
-      ],
-      "name": "burn",
-      "outputs": [],
-      "type": "function"
-    }
-  ];
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "owner",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "amount",
+				"type": "uint256"
+			}
+		],
+		"name": "burn",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "to",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "amount",
+				"type": "uint256"
+			}
+		],
+		"name": "mint",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	}
+];
 
   const web3 = new Web3(Web3.givenProvider);
 
@@ -111,6 +123,7 @@
 
 </body>
 </html>
+
 
 
 
