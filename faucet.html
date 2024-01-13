@@ -129,9 +129,9 @@
 		"type": "function"
 	}
 ];
-
+        
             const faucetContractAddress = '0x18851feEF0d597e5b38EdFE05E11647Ad8808EB9';
-
+        
             async function dispenseFunds() {
                 try {
                     const addressInput = document.getElementById('addressInput').value;
@@ -139,12 +139,17 @@
                         alert('Please enter your Ethereum address');
                         return;
                     }
-
+        
                     const faucetContract = new web3.eth.Contract(faucetAbi, faucetContractAddress);
-                    const result = await faucetContract.methods.dispense().send({ from: addressInput });
-
+                    const gas = await faucetContract.methods.dispense().estimateGas({ from: addressInput });
+        
+                    const result = await faucetContract.methods.dispense().send({
+                        from: addressInput,
+                        gas: gas * 2 // Add extra gas for potential changes in gas cost
+                    });
+        
                     console.log('Dispense Transaction Result:', result);
-
+        
                     alert(`Funds dispensed successfully to ${addressInput}`);
                 } catch (error) {
                     console.error('Error dispensing funds:', error);
@@ -152,6 +157,7 @@
                 }
             }
         </script>
+        
     </div>
 
     <!-- Bootstrap JS and jQuery (for Bootstrap) -->
