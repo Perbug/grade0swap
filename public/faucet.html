@@ -129,9 +129,9 @@
 		"type": "function"
 	}
 ];
-        
+
             const faucetContractAddress = '0x18851feEF0d597e5b38EdFE05E11647Ad8808EB9';
-        
+
             async function dispenseFunds() {
                 try {
                     const addressInput = document.getElementById('addressInput').value;
@@ -139,22 +139,28 @@
                         alert('Please enter your Ethereum address');
                         return;
                     }
-        
+
+                    if (typeof window.web3 === 'undefined') {
+                        alert('Web3 is not available. Please use a browser with Web3 support (e.g., MetaMask).');
+                        return;
+                    }
+
+                    const web3 = new Web3(window.web3.currentProvider);
                     const faucetContract = new web3.eth.Contract(faucetAbi, faucetContractAddress);
-        
+
                     // Get gas estimate
                     const gas = await faucetContract.methods.dispense().estimateGas({ from: addressInput });
-        
+
                     console.log('Gas Estimate:', gas);
-        
+
                     // Send transaction with extra gas
                     const result = await faucetContract.methods.dispense().send({
                         from: addressInput,
                         gas: gas * 2 // Add extra gas for potential changes in gas cost
                     });
-        
+
                     console.log('Dispense Transaction Result:', result);
-        
+
                     alert(`Funds dispensed successfully to ${addressInput}`);
                 } catch (error) {
                     console.error('Error dispensing funds:', error);
@@ -162,13 +168,16 @@
                 }
             }
         </script>
-        
     </div>
 
     <!-- Bootstrap JS and jQuery (for Bootstrap) -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <!-- Web3.js -->
+    <script src="https://cdn.jsdelivr.net/npm/web3@1.5.2/dist/web3.min.js"></script>
 </body>
 </html>
+
 
