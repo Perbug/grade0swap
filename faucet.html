@@ -4,18 +4,46 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Faucet Dispenser</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            margin: 30px;
+        }
+        .container {
+            max-width: 400px;
+            margin: auto;
+            text-align: center;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            background-color: #ffffff;
+        }
+        h1 {
+            color: #007bff;
+        }
+        button {
+            margin-top: 15px;
+        }
+        input {
+            margin-bottom: 10px;
+        }
+    </style>
 </head>
 <body>
-    <h1>Faucet Dispenser</h1>
-    
-    <p>Dispense funds from the Faucet:</p>
-    <label for="addressInput">Enter your Ethereum address:</label>
-    <input type="text" id="addressInput" placeholder="0x...">
-    <button onclick="dispenseFunds()">Dispense Funds</button>
+    <div class="container">
+        <h1>Faucet Dispenser</h1>
+        
+        <p>Dispense funds from the Faucet:</p>
+        <div class="input-group mb-3">
+            <input type="text" id="addressInput" class="form-control" placeholder="Enter your Ethereum address">
+            <div class="input-group-append">
+                <button class="btn btn-primary" onclick="dispenseFunds()">Dispense Funds</button>
+            </div>
+        </div>
 
-    <script>
-        // Replace with the actual ABI of your Faucet smart contract
-        const faucetAbi = [
+        <script>
+            const faucetAbi = [
 	{
 		"inputs": [],
 		"name": "deposit",
@@ -102,26 +130,34 @@
 	}
 ];
 
-        // Replace with the actual address of your deployed Faucet smart contract
-        const faucetContractAddress = '0x18851feEF0d597e5b38EdFE05E11647Ad8808EB9';
+            const faucetContractAddress = '0x18851feEF0d597e5b38EdFE05E11647Ad8808EB9';
 
-        async function dispenseFunds() {
-            try {
-                const addressInput = document.getElementById('addressInput').value;
-                if (!addressInput) {
-                    alert('Please enter your Ethereum address');
-                    return;
+            async function dispenseFunds() {
+                try {
+                    const addressInput = document.getElementById('addressInput').value;
+                    if (!addressInput) {
+                        alert('Please enter your Ethereum address');
+                        return;
+                    }
+
+                    const faucetContract = new web3.eth.Contract(faucetAbi, faucetContractAddress);
+                    const result = await faucetContract.methods.dispense().send({ from: addressInput });
+
+                    console.log('Dispense Transaction Result:', result);
+
+                    alert(`Funds dispensed successfully to ${addressInput}`);
+                } catch (error) {
+                    console.error('Error dispensing funds:', error);
+                    alert('Failed to dispense funds. Please check the console for details.');
                 }
-
-                const faucetContract = new web3.eth.Contract(faucetAbi, faucetContractAddress);
-                await faucetContract.methods.dispense().send({ from: addressInput });
-
-                alert(`Funds dispensed successfully to ${addressInput}`);
-            } catch (error) {
-                console.error('Error dispensing funds:', error.message);
-                alert('Failed to dispense funds. Please check the console for details.');
             }
-        }
-    </script>
+        </script>
+    </div>
+
+    <!-- Bootstrap JS and jQuery (for Bootstrap) -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
+
