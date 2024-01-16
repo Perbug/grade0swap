@@ -1,12 +1,9 @@
 body {
-  background-color: #f4f4f4;
+  background-color: #0F051D;
   color: #555555;
-
   font-family: Arial, Helvetica, sans-serif;
-
   font-size: 15px;
   font-weight: normal;
-
   line-height: 1em;
   margin: 0;
 }
@@ -15,12 +12,11 @@ body {
   padding: 10px;
 }
 
-.container {
-  width: 80%;
-  margin: auto;
-  border: 5px #333333 solid;
-  padding: 10px;
-  border-radius: 25px;
+
+.blueColor
+{
+  color:#ff00ea !important;
+
 }
 
 .input {
@@ -68,4 +64,124 @@ body {
 .markdown {
   width: 80%;
   margin: auto;
+}
+
+.navbar{
+  padding-left:20px;
+  padding-top:20px;
+  padding-bottom:20px;
+  padding-right:20px;
+  background-color:#0F051D !important;
+}
+.fab{
+  font-size:18px !important;
+}
+.navbar-brand
+{
+  font-weight:900 !important;
+}
+.nav-item > .nav-link
+{
+  color:#fff !important;
+}
+.App
+{
+  background-color:#0F051D !important;
+  min-height:100vh !important;
+}
+.Title{
+  background-color:transparent;
+}
+.alternative-title
+{
+  background-color:transparent !important;
+  color:#fff !important;
+  font-size:28px !important;
+  text-align: center;
+  width:100% !important;
+  font-weight:700 !important;padding-top:50px;
+}
+
+.community
+{
+  background-color: #0F051D !important;
+  background-size: cover;
+  min-height:150vh !important;
+  position:relative !important;
+}
+.community_headline
+{
+  font-size:68px !important;
+  font-weight: 900;
+}
+.be_our_member
+{
+  font-size:32px !important;
+  font-weight: 700;
+  color:#ff00ea !important
+}
+.navbar-title-show
+{
+  color:#ff00ea !important;
+  text-align: center;
+  font-weight: 700 !important;
+}
+.NavbarItems
+{
+  background-color: #0F051D !important;
+}
+.div_img
+{
+  width:150px;
+  height:20px;
+  margin-bottom: 30px;;
+}
+.NavbarItems{
+  text-align: center !important;
+}
+.NavbarItems .nav-menu
+{
+  margin:0 auto !important;
+  margin-left: 10% !important;
+}
+.NavbarItems .nav-links{
+  color:#fff !important;
+  text-align: center;
+  font-size:32px !important;
+  margin-left: 30px !important;
+  padding: 15px 40px !important;
+}
+.nav-links:hover
+{
+  background-color: #ff00ea !important;
+  color:#fff !important;
+  padding: 15px 40px !important;
+}
+
+.nav-links:focus
+{
+  background-color: #ff00ea !important;
+  color:#fff !important;
+  padding: 15px 40px !important;
+}
+.balanceHeading
+{
+  color:#fff;
+  font-weight:700 !important;
+  font-size:32px !important
+}
+.balance-text
+{
+  font-size:32px !important;
+  color:#fff;
+}
+.swapperButton
+{
+  width:3rem !important;
+  height:3rem !important;
+}
+.heading_balance
+{
+  font-weight:700 !important;
+  font-size:22px !important;
 }

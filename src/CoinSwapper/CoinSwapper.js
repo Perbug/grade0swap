@@ -35,6 +35,7 @@ const styles = (theme) => ({
     borderRadius: theme.spacing(2),
     padding: theme.spacing(1),
     paddingBottom: theme.spacing(3),
+    backgroundColor:"rgba(102, 16, 242, 1.0)",
   },
   switchButton: {
     zIndex: 1,
@@ -48,6 +49,9 @@ const styles = (theme) => ({
     textAlign: "center",
     padding: theme.spacing(0.5),
     marginBottom: theme.spacing(1),
+    color:"#fff",
+    fontWeight:'900',
+    fontSize:'48px'
   },
   hr: {
     width: "100%",
@@ -347,7 +351,7 @@ function CoinSwapper(props) {
             </Grid>
 
             <IconButton onClick={switchFields} className={classes.switchButton}>
-              <SwapVerticalCircleIcon fontSize="medium" />
+              <SwapVerticalCircleIcon fontSize="medium" className="swapperButton" />
             </IconButton>
 
             <Grid item xs={12} className={classes.fullWidth}>
@@ -362,15 +366,15 @@ function CoinSwapper(props) {
             <hr className={classes.hr} />
 
             {/* Balance Display */}
-            <Typography variant="h6">Your Balances</Typography>
+            <Typography variant="h6" className="balanceHeading">Your Balances</Typography>
             <Grid container direction="row" justifyContent="space-between">
               <Grid item xs={6}>
-                <Typography variant="body1" className={classes.balance}>
+                <Typography variant="body1" className={`${classes.balance} balance-text`} >
                   {formatBalance(coin1.balance, coin1.symbol)}
                 </Typography>
               </Grid>
               <Grid item xs={6}>
-                <Typography variant="body1" className={classes.balance}>
+                <Typography variant="body1" className={`${classes.balance} balance-text`}>
                   {formatBalance(coin2.balance, coin2.symbol)}
                 </Typography>
               </Grid>
@@ -379,15 +383,15 @@ function CoinSwapper(props) {
             <hr className={classes.hr} />
 
             {/* Reserves Display */}
-            <Typography variant="h6">Reserves</Typography>
+            <Typography variant="h6" className="balanceHeading">Reserves</Typography>
             <Grid container direction="row" justifyContent="space-between">
               <Grid item xs={6}>
-                <Typography variant="body1" className={classes.balance}>
+                <Typography variant="body1" className={`${classes.balance} balance-text`}>
                   {formatReserve(reserves[0], coin1.symbol)}
                 </Typography>
               </Grid>
               <Grid item xs={6}>
-                <Typography variant="body1" className={classes.balance}>
+                <Typography variant="body1" className={`${classes.balance} balance-text`}>
                   {formatReserve(reserves[1], coin2.symbol)}
                 </Typography>
               </Grid>
@@ -408,18 +412,6 @@ function CoinSwapper(props) {
           </Grid>
         </Paper>
       </Container>
-
-      <Grid
-        container
-        className={classes.footer}
-        direction="row"
-        justifyContent="center"
-        alignItems="flex-end"
-      >
-        <p>
-        Grade0 Swap Interface
-        </p>
-      </Grid>
     </div>
   );
 }

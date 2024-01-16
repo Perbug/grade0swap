@@ -10,9 +10,10 @@ class NavBar extends Component {
     return (
       <nav>
         <div className="Title">
-          <h1 className="navbar-logo">
+          <h1 className="navbar-logo navbar-title-show">
             Grade0 Swap
           </h1>
+          <img src="/images/divider.svg" alt="Divider" class="div_img"></img>
         </div>
 
         <div className="NavbarItems">

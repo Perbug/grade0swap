@@ -5,10 +5,16 @@ import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter } from "react-router-dom";
+import Header from './Header';
+import Slider from './Slider';
+import Joincommunity from "./Joincommunity";
+
 
 ReactDOM.render(
   <BrowserRouter>
     <React.StrictMode>
+    <Header />
+      <Slider />
       <App />
     </React.StrictMode>
   </BrowserRouter>,

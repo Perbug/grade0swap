@@ -16,8 +16,9 @@ const styles = (theme) => ({
     borderRadius: theme.spacing(2),
     padding: theme.spacing(1),
     paddingBottom: theme.spacing(3),
-    maxWidth: 700,
-    margin: "auto",
+    maxWidth: "1000px",
+    marginLeft:"31%",
+    backgroundColor:"rgba(102, 16, 242, 1.0)"
   },
   title: {
     textAlign: "center",
@@ -55,17 +56,7 @@ function Liquidity(props) {
         </Paper>
       </Container>
 
-      <Grid
-        container
-        className={classes.footer}
-        direction="row"
-        justifyContent="center"
-        alignItems="flex-end"
-      >
-        <p>
-          Grade0 Swap Interface
-        </p>
-      </Grid>
+
     </div>
   );
 }

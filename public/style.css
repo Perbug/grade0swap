@@ -54,5 +54,73 @@ body {
     color: #666;
     font-size: 14px;
 }
-
-
+.top_section
+{
+    background-image: url('/images/background.png');
+    background-size: cover;
+    min-height:150vh !important;
+    position:relative !important;
+}
+.content{
+    width:100% !important;
+}
+.top_section::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(15, 5, 29, 0.9); /* Adjust the alpha value for transparency */
+}
+.bg-dark
+{
+    background-color:#0F051D !important;
+}
+.navbar
+{
+    background-color:#0F051D !important;
+}
+.MuiPaper-root
+{
+    position: absolute !important;
+}
+.MuiGrid-root
+{
+    margin-top:0px !important;
+}
+.slider_container
+{
+    position: relative !important;
+    top:75vh !important;
+    background-color:transparent;
+    border:none !important;
+    width:100%;
+    text-align: center;
+}
+.sliderLeftContainer p{
+    color:#fff;
+    font-size:32px;
+    padding-top:20px;
+}
+.slider_container h1{
+    color:#fff;
+    font-size:7rem !important;
+    font-weight:700 !important;
+    text-align: center;
+    width:100%;
+}
+.walletImage{
+    width:100%;
+}
+.sliderLeftContainer
+{
+    padding-top:100px;
+}
+@media(max-width:650px)
+{
+    .walletImage
+    {
+        display: none !important;
+    }
+}

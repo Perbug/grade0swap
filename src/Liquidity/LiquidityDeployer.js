@@ -19,16 +19,19 @@ const styles = (theme) => ({
     borderRadius: theme.spacing(2),
     padding: theme.spacing(2),
     paddingBottom: theme.spacing(3),
-    width: "40%",
+    marginLeft:"10%",
+    marginRight:"10%",
+    width: "90%",
     overflow: "wrap",
     background: "linear-gradient(45deg, #ff0000 30%, #FF8E53 90%)",
     color: "white",
+    position:"relative !important"
   },
   fullWidth: {
     width: "100%",
   },
   values: {
-    width: "50%",
+    width: "100%",
   },
   title: {
     textAlign: "center",
@@ -400,15 +403,15 @@ function LiquidityDeployer(props) {
           spacing={2}
         >
           {/* Balance Display */}
-          <Typography variant="h6">Your Balances</Typography>
+          <Typography className="text-white heading_balance" variant="h6">Your Balances</Typography>
           <Grid container direction="row" justifyContent="space-between">
             <Grid item xs={6}>
-              <Typography variant="body1" className={classes.balance}>
+              <Typography variant="body1" className={'$classes.balance text-white balance-text'}>
                 {formatBalance(coin1.balance, coin1.symbol)}
               </Typography>
             </Grid>
             <Grid item xs={6}>
-              <Typography variant="body1" className={classes.balance}>
+              <Typography variant="body1" className='{classes.balance} text-white balance-text'>
                 {formatBalance(coin2.balance, coin2.symbol)}
               </Typography>
             </Grid>
@@ -417,15 +420,15 @@ function LiquidityDeployer(props) {
           <hr className={classes.hr} />
 
           {/* Reserves Display */}
-          <Typography variant="h6">Reserves</Typography>
+          <Typography variant="h6" className="text-white heading_balance">Reserves</Typography>
           <Grid container direction="row" justifyContent="space-between">
             <Grid item xs={6}>
-              <Typography variant="body1" className={classes.balance}>
+              <Typography variant="body1" className={'$classes.balance text-white balance-text'}>
                 {formatReserve(reserves[0], coin1.symbol)}
               </Typography>
             </Grid>
             <Grid item xs={6}>
-              <Typography variant="body1" className={classes.balance}>
+              <Typography variant="body1" className={'$classes.balance text-white balance-text'}>
                 {formatReserve(reserves[1], coin2.symbol)}
               </Typography>
             </Grid>
@@ -434,10 +437,10 @@ function LiquidityDeployer(props) {
           <hr className={classes.hr} />
 
           {/* Liquidity Tokens Display */}
-          <Typography variant="h6">Your Liquidity Pool Tokens</Typography>
+          <Typography variant="h6" className="text-white heading_balance">Your Liquidity Pool Tokens</Typography>
           <Grid container direction="row" justifyContent="center">
             <Grid item xs={6}>
-              <Typography variant="body1" className={classes.balance}>
+              <Typography variant="body1" className={'$classes.balance text-white balance-text'}>
                 {formatReserve(liquidityTokens, "UNI-V2")}
               </Typography>
             </Grid>

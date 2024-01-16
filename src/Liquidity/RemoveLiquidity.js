@@ -20,10 +20,11 @@ const styles = (theme) => ({
     borderRadius: theme.spacing(2),
     padding: theme.spacing(2),
     paddingBottom: theme.spacing(3),
-    width: "40%",
+    width: "90%",
     overflow: "wrap",
     background: "linear-gradient(45deg, #ff0000 30%, #FF8E53 90%)",
     color: "white",
+    position:"relative !important"
   },
   fullWidth: {
     width: "100%",

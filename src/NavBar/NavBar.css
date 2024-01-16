@@ -1,9 +1,9 @@
 .Title {
-  background: #f4f4f4;
-  height: 50px;
-  text-align: left;
-  margin-left: 25%;
-  font-size: 1rem;
+  background: transparent;
+  text-align: center;
+  font-size: 32px !important;
+  width:100%;
+  font-weight:700 !important;
 }
 
 .NavbarItems {
