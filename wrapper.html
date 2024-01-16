@@ -5,23 +5,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Wrap Grade0</title>
-    <style>
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+
+	<style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #eaeaea;
+            background-color: #0F051D;
             color: #333;
             text-align: center;
-        }
-        .container {
-            width: 90%;
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 50px 20px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            background-color: white;
-            border-radius: 8px;
         }
         h1 {
             color: #007bff;
@@ -56,20 +50,132 @@
                 width: calc(100% - 22px);
             }
         }
+		.navbar{
+			background-color: #0F051D !important;
+			padding-left: 20px;
+			padding-right: 20px;
+			padding-top: 10px;
+			padding-bottom: 10px;
+		}
+		.nav-link{
+			color:#fff !important;
+		}
+		.nav-item > .nav-link
+		{
+		color:#fff !important;
+		}
+		.wrap_grade0{
+			background-image: linear-gradient(25deg, #2600fc, #ff00ea) !important;
+			margin-top:30px;
+			color:#fff;
+			padding-top:20px;
+			border-radius: 10px;
+			text-align: center;
+
+		}
+		.wrap_grade0 h1{
+			color:#fff !important;
+			font-weight: 700;
+		}
+		#connectWallet
+		{
+			border-radius: 50px !important;
+			background-color: #ff00ea !important;
+			padding-left: 30px;
+			padding-right: 30px;
+			padding-top: 10px;
+			padding-bottom: 10px;
+		}
+		.input
+		{
+			background-color: #ff00ea;
+			color:#fff !important;
+			width:100% !important
+		}
+		.input:focus
+		{
+			background-color: #ff00ea;
+			color:#fff !important;
+		}
+		.btn-unwrap
+		{
+			border-radius: 50px !important;
+			background-color: #ff00ea !important;
+			padding-left: 30px;
+			width:100%;
+			padding-right: 30px;
+			padding-top: 10px;
+			padding-bottom: 10px;
+		}
+		.btn-wrap
+		{
+
+			border-radius: 50px !important;
+			background-color: transparent !important;
+			border:2px solid #fff !important;
+			width:100%;
+			padding-left: 30px;
+			padding-right: 30px;
+			padding-top: 10px;
+			padding-bottom: 10px;
+		}
     </style>
 </head>
 <body>
+	<nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
+		<a class="navbar-brand" href="/">Grade0</a>
+		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+		  <span class="navbar-toggler-icon"></span>
+		</button>
+		<div class="collapse navbar-collapse justify-content-between" id="navbarNav">
+		  <ul class="navbar-nav">
+			<li class="nav-item active">
+			  <a class="nav-link" href="/">Home</a>
+			</li>
+			<li class="nav-item">
+			  <a class="nav-link" target="_blank"  href="https://explorer.grade0.com">Explorer</a>
+			</li>
+			<li class="nav-item">
+			  <a class="nav-link" href="wrapper.html">Wrap Grade0</a>
+			</li>
+			<li class="nav-item">
+			  <a class="nav-link" href="how_to_connect.html">Connect</a>
+			</li>
+		  </ul>
+		  <ul class="navbar-nav">
+			<li class="nav-item">
+			  <a class="nav-link" href="#"><i class="fab fa-telegram"></i></a>
+			</li>
+			<li class="nav-item">
+			  <a class="nav-link" href="#"><i class="fab fa-twitter"></i></a>
+			</li>
+			<li class="nav-item">
+			  <a class="nav-link" href="#"><i class="fab fa-github"></i></a>
+			</li>
+		  </ul>
+		</div>
+	  </nav>
     <div class="container">
-        <h1>Wrap Grade0 into WGR0</h1>
-        <button id="connectWallet">Connect Wallet</button>
-        <div id="balance"></div>
-        
-        <input type="text" id="amount" placeholder="Enter amount to wrap/unwrap" />
-        
-        <button id="wrap">Wrap</button>
-        <button id="unwrap">Unwrap</button>
-    </div>
+		<div class="row">
+			<div class="col-md-6 offset-md-3 wrap_grade0">
+				<h1>Wrap Grade0 into WGR0</h1>
+				<button class="btn btn-md btn-primary" id="connectWallet">Connect Wallet</button>
+				<div class="form-group">
+					<input type="text" id="amount" class="form-control input" placeholder="Enter amount to Wrap/Unwrap" />
+				</div>
+				<div class="row">
+					<div class="col-md-6">
+						<button id="wrap" class="btn btn-md btn-primary btn-wrap">Wrap</button>
+					</div>
+					<div class="col-md-6">
+						<button id="unwrap" class="btn btn-md btn-primary btn-unwrap">Unwrap</button>
+					</div>
+				</div>
+			</div>
+		</div>
 
+    </div>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" ></script>
     <script src="https://cdn.jsdelivr.net/npm/ethers@5.2/dist/ethers.umd.min.js"></script>
     <script>
         let provider;
