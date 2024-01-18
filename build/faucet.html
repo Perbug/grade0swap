@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GR0 Faucet</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        button {
+            padding: 10px;
+            margin-top: 10px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>GR0 Faucet</h1>
+    <p>Click the button to request 10,000 GR0 from the faucet:</p>
+
+    <button onclick="requestGR0()">Request GR0</button>
+
+    <script>
+        async function requestGR0() {
+            try {
+                const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
+                const account = accounts[0];
+
+                const response = await fetch(`http://localhost:8545`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        jsonrpc: '2.0',
+                        method: 'eth_sendTransaction',
+                        params: [{
+                            from: account,
+                            to: '0xa088D584A8B7F137C84E085F866f6Cc79429320e', // Replace with the actual contract address
+                            value: '0x8AC7230489E80000', // 10,000 GR0 in Wei
+                        }],
+                        id: 1,
+                    }),
+                });
+
+                const result = await response.json();
+                console.log(result);
+
+                alert('Request successful! Check your wallet for the transaction.');
+            } catch (error) {
+                console.error(error);
+                alert('Error requesting GR0. Please check the console for details.');
+            }
+        }
+    </script>
+
+</body>
+</html>
