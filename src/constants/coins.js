@@ -11,15 +11,11 @@ const GRADE0Coins = [
     address: "0xd2e89db8d82cFBa24963E92EFc6c7B1f6acAc1BB"
   },
   { 
-    name: "Grade0",
-    abbr: "GR0",
-    address: ""
+    name: "Light Slicer Token",
+    abbr: "LST",
+    address: "0x0bbe70174F84524eA872A44cb53938A0cdf78b16"
   },
-  { 
-    name: "Wrapped Grade02",
-    abbr: "WGR02",
-    address: "0xE158fa2cE59bBab291c27c554495425352b6D4D9"
-  }
+  
 
 ]
 

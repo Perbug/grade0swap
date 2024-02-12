@@ -30,15 +30,15 @@ const Header = () => {
           </li>
         </ul>
         <ul className="navbar-nav">
-          <li className="nav-item">
-            <a className="nav-link" href="#"><i className="fab fa-telegram"></i></a>
-          </li>
-          <li className="nav-item">
-            <a className="nav-link" href="#"><i className="fab fa-twitter"></i></a>
-          </li>
-          <li className="nav-item">
-            <a className="nav-link" href="#"><i className="fab fa-github"></i></a>
-          </li>
+        <li class="nav-item">
+			  <a class="nav-link" href="https://t.me/grade0fficialchannel"><i class="fab fa-telegram"></i></a>
+			</li>
+			<li class="nav-item">
+			  <a class="nav-link" href="https://twitter.com/grade0fficial"><i class="fab fa-twitter"></i></a>
+			</li>
+			<li class="nav-item">
+			  <a class="nav-link" href="https://github.com/perbug"><i class="fab fa-github"></i></a>
+			</li>
         </ul>
       </div>
     </nav>
