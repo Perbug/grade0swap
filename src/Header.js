@@ -16,6 +16,9 @@ const Header = () => {
           <li className="nav-item">
             <a className="nav-link" target="_blank"  href="https://explorer.grade0.com">Explorer</a>
           </li>
+          <li class="nav-item">
+				<a class="nav-link" target="_blank"  href="https://nft.grade0.com">NFT Marketplace</a>
+			  </li>
           <li className="nav-item">
             <a className="nav-link" href="/wrapper.html">Wrap Grade0</a>
           </li>

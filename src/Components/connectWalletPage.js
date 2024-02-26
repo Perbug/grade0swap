@@ -53,7 +53,7 @@ function ConnectWalletPage() {
                   className={classes.title}
                   color="common.white"
                 >
-                  Please connect a Grade0 wallet to your browser to use the
+                  Please connect a Metamask Grade0 wallet to your browser to use the
                   application
                 </Typography>
               </Card.Body>
