@@ -29,7 +29,7 @@ const Header = () => {
             <a className="nav-link" href="https://buy.grade0.com">Buy</a>
           </li>
           <li class="nav-item">
-				<a class="nav-link" href="https://www.bitxonex.com/market/gr0usdt">Trade</a>
+				<a class="nav-link" href="">Trade</a>
 			  </li>
         </ul>
         <ul className="navbar-nav">
