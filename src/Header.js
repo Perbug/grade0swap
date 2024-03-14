@@ -25,12 +25,6 @@ const Header = () => {
           <li className="nav-item">
             <a className="nav-link" href="/how_to_connect.html">Connect</a>
           </li>
-          <li className="nav-item">
-            <a className="nav-link" href="https://buy.grade0.com">Buy</a>
-          </li>
-          <li class="nav-item">
-				<a class="nav-link" href="">Trade</a>
-			  </li>
         </ul>
         <ul className="navbar-nav">
         <li class="nav-item">
