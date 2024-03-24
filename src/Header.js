@@ -25,6 +25,9 @@ const Header = () => {
           <li className="nav-item">
             <a className="nav-link" href="/how_to_connect.html">Connect</a>
           </li>
+          <li class="nav-item">
+				<a class="nav-link" href="https://dex-trade.com/spot/trading/GR0USDT?interface=classic">Trade</a>
+			  </li>
         </ul>
         <ul className="navbar-nav">
         <li class="nav-item">
